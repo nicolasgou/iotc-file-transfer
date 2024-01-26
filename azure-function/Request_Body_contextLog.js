@@ -2,6 +2,33 @@
 
 module.exports = async function (context, req) {
 
+    let status_code = 200;
+    let error_message = "";
+
+    try {
+
+        context.log('Request Body:', req.body);
+        
+
+    }catch (e) {
+        // log any exceptions as errors
+        context.log.error("Exception thrown: " + e);
+        error_message = e;
+        status_code = 500;
+    } finally {
+        // return success or failure
+        context.res = {
+            status: status_code,
+            body: error_message
+        };
+        context.done();
+    }
+    
+    
+    
+    
+    
+   /*
     // built-in modules
     const fs = require('fs');
     const path = require("path");
@@ -21,7 +48,6 @@ module.exports = async function (context, req) {
     let status_code = 200;
     let error_message = "";
 
-
     try {
         // make sure the needed directories are available
         if (!fs.existsSync(tempDir)) {
@@ -37,54 +63,54 @@ module.exports = async function (context, req) {
         let deviceId = req.body.deviceId;
 
         // pull the message part meta data from the message properties
-        let id = "123";
-        let filepath = "folder01";
-        let filename = "measurement.csv";
-        let part = 1;
-        let maxPart = 1;
-        let compression = "deflate";
+        let id = "";
+        let filepath = "";
+        let filename = "";
+        let part = 0;
+        let maxPart = 0;
+        let compression = "none";
 
-        // // check to make sure all the needed message properties have been sent
-        // if ("id" in req.body.messageProperties) {
-        //     id = req.body.messageProperties.id;
-        // } else {
-        //     throw "Missing message property: id";
-        // }
+        // check to make sure all the needed message properties have been sent
+        if ("id" in req.body.messageProperties) {
+            id = req.body.messageProperties.id;
+        } else {
+            throw "Missing message property: id";
+        }
 
-        // if ("filepath" in req.body.messageProperties) {
-        //     filepath = path.normalize(req.body.messageProperties.filepath);
-        //     filename = path.basename(filepath);
-        //     filepath = path.dirname(filepath);
-        // } else {
-        //     throw "Missing message property: filepath";
-        // }
+        if ("filepath" in req.body.messageProperties) {
+            filepath = path.normalize(req.body.messageProperties.filepath);
+            filename = path.basename(filepath);
+            filepath = path.dirname(filepath);
+        } else {
+            throw "Missing message property: filepath";
+        }
 
-        // if ("part" in req.body.messageProperties) {
-        //     part = req.body.messageProperties.part;
-        // } else {
-        //     throw "Missing message property: part";
-        // }
+        if ("part" in req.body.messageProperties) {
+            part = req.body.messageProperties.part;
+        } else {
+            throw "Missing message property: part";
+        }
 
-        // if ("maxPart" in req.body.messageProperties) {
-        //     maxPart = Number(req.body.messageProperties.maxPart);
-        // } else {
-        //     throw "Missing message property: maxPart";
-        // }
+        if ("maxPart" in req.body.messageProperties) {
+            maxPart = Number(req.body.messageProperties.maxPart);
+        } else {
+            throw "Missing message property: maxPart";
+        }
 
-        // if ("compression" in req.body.messageProperties) {
-        //     compression = req.body.messageProperties.compression.toLowerCase();
-        //     if (compression != "none" && compression != "deflate") {
-        //         context.log("compression message property is invalid, received: " + compression);
-        //     }
-        // } else {
-        //     throw "Missing message property: compression";
-        // }
+        if ("compression" in req.body.messageProperties) {
+            compression = req.body.messageProperties.compression.toLowerCase();
+            if (compression != "none" && compression != "deflate") {
+                context.log("compression message property is invalid, received: " + compression);
+            }
+        } else {
+            throw "Missing message property: compression";
+        }
 
         // log new file part
         context.log.info("device-id: " + deviceId + " file-id: " + id + " part: " + part + " of: " + maxPart.toString() + " filepath: " + filepath + " filename: " + filename);
 
         // write out the file part
-        fs.writeFileSync(path.join(tempDir, (deviceId + "." + id + "." + maxPart + "." + part)), req.body.telemetry.sensorEncodedDataSet);
+        fs.writeFileSync(path.join(tempDir, (deviceId + "." + id + "." + maxPart + "." + part)), req.body.telemetry.data);
 
         // check to see if all the file parts are available
         let filePartCount = glob.sync(path.join(tempDir, (deviceId + "." + id + ".*"))).length;
@@ -169,4 +195,5 @@ module.exports = async function (context, req) {
         };
         context.done();
     }
+    */
 }

@@ -12,8 +12,8 @@ from azure.iot.device import Message
 from azure.iot.device import exceptions
 
 # device settings - FILL IN YOUR VALUES HERE
-scope_id = "<scope id for IoT Central Application>"
-group_symmetric_key = "<Group SAS key for IoT Central Application>"
+scope_id = "0ne0086BD1B" #CSXDIGITAL2
+group_symmetric_key = "8QfcRCQOSpxeu2+BxWx+zBIv1SZwz/mK5Nk10aAdid9EkG1ahKe8jfPkfpYu16THPVE5ep5JsGv53aMh38083g=="
 
 # optional device settings - CHANGE IF DESIRED/NECESSARY
 provisioning_host = "global.azure-devices-provisioning.net"
@@ -26,7 +26,7 @@ device_client = None
 terminate = False
 trying_to_connect = False
 max_connection_attempt = 3
-verbose_logging = False
+verbose_logging = True
 
 multipart_msg_schema = '{{"data": "{}"}}'
 
@@ -62,6 +62,8 @@ def send_file(filename, upload_filepath, compress):
     file_id = uuid.uuid4()
     part = 1
     index = 0
+
+
 
     # chunk the file payload into 255KB chunks to send to IoT central over MQTT (could also be AMQP or HTTPS)
     status = 200
@@ -171,14 +173,14 @@ def main():
     if connect():
         local_upload_dir = "./sample-upload-files/"
 
-        # send an mp4 video file with compression
-        send_file(local_upload_dir + "video.mp4", "myDevice\\video\\video.mp4", True)
+        # # send an mp4 video file with compression
+        # send_file(local_upload_dir + "video.mp4", "myDevice\\video\\video.mp4", True)
 
-        # send a pdf file with compression
-        send_file(local_upload_dir + "large-pdf.pdf", "myDevice\\pdf\\large-pdf.pdf", True) # 10,386KB
+        # # send a pdf file with compression
+        # send_file(local_upload_dir + "large-pdf.pdf", "myDevice\\pdf\\large-pdf.pdf", True) # 10,386KB
 
         # send a jpg file without compression
-        send_file(local_upload_dir + "4k-image.jpg", "myDevice/images/4k-image.jpg", False) # 3,914KB
+        send_file(local_upload_dir + "iis3dwb-FS2g-LP6k3_normal.csv", "myDevice/measurements/iis3dwb-FS2g-LP6k3_normal.csv", True) # 3,914KB
 
         # disconnect from IoT hub/central
         print("Disconnecting from IoT Hub/Central")
